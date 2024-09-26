@@ -1,5 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse #NEW
+
+
 # Create your tests here.
 class HomepageTests(SimpleTestCase):
     def test_url_exists_at_correct_location(self):
@@ -36,3 +38,19 @@ class AboutpageTests(SimpleTestCase):
         response = self.client.get(reverse("about"))
         self.assertContains(response, "<h1>Company About Page</h1>")
 
+class ProductspageTests(SimpleTestCase):
+    def test_url_exists_at_correct_location(self):
+        response = self.client.get("/products/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_url_avaliable_by_name(self): #NEW
+        response = self.client.get(reverse("products"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_template_name_correct(self): #NEW
+        response = self.client.get(reverse("products"))
+        self.assertTemplateUsed(response, "products.html")
+
+    def test_template_content(self): #NEW
+        response = self.client.get(reverse("products"))
+        self.assertContains(response, "<h1>Company Products Page</h1>")
